@@ -1,0 +1,30 @@
+{
+  "name": "weatha",
+  "version": "1.0.0",
+  "description": "simple weather app, v1.0.0",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp && http-server -a localhost -c-1 dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pschfr/weatha.git"
+  },
+  "author": "Paul Schaefer",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pschfr/weatha/issues",
+    "email": "yeppaul2@gmail.com"
+  },
+  "homepage": "https://github.com/pschfr/weatha#readme",
+  "dependencies": {
+    "gulp":"^3.9.1",
+    "gulp-util":"^3.0.8",
+    "vinyl-ftp":"^0.6.0",
+    "http-server":"^0.10.0",
+    "gulp-pug":"^3.3.0",
+    "gulp-sass":"^3.1.0",
+    "gulp-coffee":"^2.3.4"
+  }
+}
