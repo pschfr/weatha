@@ -1,7 +1,5 @@
 # Global variables
-unit = localStorage.getItem('temp-unit')
-if unit == null
-	unit = 'imperial'
+unit = 'imperial'
 API_key = 'cb2555990c5309b5ffb90ba6fdea4c62'
 
 # Attempt to geolocate user
@@ -36,10 +34,10 @@ fetchWeather = (lat, lon) ->
 			windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
 			humidity = weather.main.humidity
 
-			document.getElementById('current').innerHTML = '<h3>' + temperature + '&deg;<br/> ' + condition + '</h3><p>' + windSpeed + 'mph ' + windDir + '<br/>' + humidity + '% humidity</p>'
+			document.getElementById('current').innerHTML = '<h1>' + temperature + '&deg;</h1><h3>' + condition + '</h3><p>' + windSpeed + 'mph ' + windDir + ', ' + humidity + '% humidity</p>'
 			document.getElementById('location').innerHTML = location
 			document.getElementById('location').style.opacity = 1
-			console.log(weather)
+			# console.log(weather)
 	xhr.send(null)
 
 
@@ -58,8 +56,8 @@ fetchForecast = (lat, lon) ->
 				temp = Math.round(day.main.temp)
 				date = day.dt_txt
 				if (date.includes('12:00:00'))
-					element.innerHTML += '<div class="day">' + temp + '&deg;<small>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</small></div>'
-					console.log(day, temp, new Date(date))
+					element.innerHTML += '<div class="day"><h3>' + temp + '&deg;</h3><small>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</small></div>'
+					# console.log(day, temp, new Date(date))
 					document.getElementById('weather').style.opacity = 1
 	xhr.send(null)
 

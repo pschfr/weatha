@@ -1,19 +1,16 @@
 @import 'normalize'
 
-$sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif
+$sans: 'Abel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif
 $light: #fff
 $dark:  #333
 $shade: 1px 2px 4px transparentize($dark, 0.5)
 $head: 56px
 
 html
-	position: relative
 	min-height: 100%
 
 body
-	background: #2C3E50
 	background: linear-gradient(to bottom, #FD746C, #2C3E50) center/cover no-repeat
-	padding: 15px
 	margin-top: $head
 	font-family: $sans
 	color: $light
@@ -24,19 +21,24 @@ header
 	box-shadow: $shade
 	position: absolute
 	top: 0
-	left: 0
 	width: 100%
 	height: $head
 	text-align: left
+	text-transform: uppercase
 	h1
 		padding: 0 15px
 		margin: 10px 0
 		.right
 			float: right
-			&:after
-				content: ''
-				display: block
-				clear: right
+
+footer
+	position: absolute
+	bottom: 0
+	width: 100%
+	color: darken($light, 50%)
+
+a
+	color: inherit
 
 small
 	display: block
@@ -44,6 +46,14 @@ small
 #forecast
 	display: flex
 	justify-content: space-between
+
+#weather
+	max-width: 600px
+	padding: 0 15px
+	margin: $head * 2 auto 0
+	#current
+		h1
+			font-size: 4em
 
 #weather,
 #location
