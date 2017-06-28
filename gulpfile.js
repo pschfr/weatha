@@ -3,7 +3,7 @@ var gulp = require('gulp'),
 	vftp = require('vinyl-ftp'),
 	pug  = require('gulp-pug')
 	sass = require('gulp-sass'),
-	coff = require('gulp-coffee');
+	coff = require('gulp-coffeescript');
 
 // Compile everything
 gulp.task('default', ['pug', 'sass', 'coffee']);
@@ -13,7 +13,8 @@ gulp.task('pug', function() {
 	return gulp.src('*.pug').pipe(pug({
 		locals: {
 			name: 'Weatha',
-			intro: 'simple weather app, v1.0.0'
+			intro: 'simple weather app v1.0.2',
+			githubURL: 'https://github.com/pschfr/weatha'
 		}
 	})).pipe(gulp.dest('dist/'));
 });
@@ -29,7 +30,7 @@ gulp.task('sass', function() {
 gulp.task('coffee', function() {
 	return gulp.src('js/*.coffee').pipe(coff({
 		bare: true
-	})).pipe(gulp.dest('dist/js'));
+	})).on('error', util.log).pipe(gulp.dest('dist/js'));
 });
 
 // Uploads to server via FTP

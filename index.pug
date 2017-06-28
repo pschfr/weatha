@@ -7,10 +7,12 @@ html(lang="en")
 		meta(name="description" content=intro)
 		title #{name} &mdash; #{intro}
 		link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css")
 		link(rel="stylesheet" href="/css/main.css")
 	body
 		include includes/header.pug
-		#weather
+		main
 			#current
 			#forecast
 		include includes/footer.pug
+		script(src="/js/app.js")

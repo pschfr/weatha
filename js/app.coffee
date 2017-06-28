@@ -37,7 +37,6 @@ fetchWeather = (lat, lon) ->
 			document.getElementById('current').innerHTML = '<h1>' + temperature + '&deg;</h1><h3>' + condition + '</h3><p>' + windSpeed + 'mph ' + windDir + ', ' + humidity + '% humidity</p>'
 			document.getElementById('location').innerHTML = location
 			document.getElementById('location').style.opacity = 1
-			# console.log(weather)
 	xhr.send(null)
 
 
@@ -57,8 +56,7 @@ fetchForecast = (lat, lon) ->
 				date = day.dt_txt
 				if (date.includes('12:00:00'))
 					element.innerHTML += '<div class="day"><h3>' + temp + '&deg;</h3><small>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</small></div>'
-					# console.log(day, temp, new Date(date))
-					document.getElementById('weather').style.opacity = 1
+					document.getElementsByTagName('main')[0].style.opacity = 1
 	xhr.send(null)
 
 geolocWeather()

@@ -1,5 +1,3 @@
-@import 'normalize'
-
 $sans: 'Abel', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif
 $light: #fff
 $dark:  #333
@@ -43,19 +41,19 @@ a
 small
 	display: block
 
-#forecast
-	display: flex
-	justify-content: space-between
-
-#weather
+main
 	max-width: 600px
 	padding: 0 15px
 	margin: $head * 2 auto 0
 	#current
 		h1
 			font-size: 4em
+			margin: 0
+	#forecast
+		display: flex
+		justify-content: space-between
 
-#weather,
+main,
 #location
 	opacity: 0
 	transition: all 1s
