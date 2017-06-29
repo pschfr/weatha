@@ -8,8 +8,7 @@ html
 	min-height: 100%
 
 body
-	background: linear-gradient(to bottom, #FD746C, #2C3E50) center/cover no-repeat
-	margin-top: $head
+	background: linear-gradient(to bottom, #FD746C, #2C3E50)
 	font-family: $sans
 	color: $light
 
@@ -31,9 +30,12 @@ footer
 	position: absolute
 	bottom: 0
 	width: 100%
-	color: darken($light, 50%)
+	color: darken($light, 25%)
 	p
 		padding: 0 15px
+		a
+			&:hover, &:focus
+				color: $light
 
 a
 	color: inherit
@@ -44,8 +46,6 @@ main
 	margin: $head * 2 auto 0
 	opacity: 0
 	transition: all 1s
-	display: grid
-	grid-template: 1fr / 1fr
 	#current, #forecast
 		display: flex
 		justify-content: space-between
@@ -63,9 +63,8 @@ main
 		margin-top: 45px
 		h2
 			margin: 10px 0
-		h4
-			margin: 0
-			font-weight: normal
+		p
+			text-transform: capitalize
 		small
 			text-transform: uppercase
 

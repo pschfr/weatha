@@ -59,7 +59,7 @@ fetchForecast = (lat, lon) ->
 			element.innerHTML = ''
 			for day in JSON.parse(xhr.responseText).contents.list
 				temp = Math.round(day.main.temp)
-				cond = day.weather[0].main
+				cond = day.weather[0].description
 				date = day.dt_txt
 				if (date.includes('12:00:00'))
 					element.innerHTML += '<div><small>' + new Date(date).toString().split(' ').slice(0, 1) + '</small><h2>' + temp + '&deg;</h2><p>' + cond + '</p></div>'
