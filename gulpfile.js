@@ -51,7 +51,7 @@ gulp.task('deploy', function() {
 		parallel: 8,
 		log: util.log
 	}),
-	globs = 'dist/*';
+	globs = 'dist/**';
 
 	return gulp.src(globs, { buffer: false })
 		  .pipe(conn.newer('/public_html/weatha'))
