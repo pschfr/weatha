@@ -21,7 +21,7 @@ gulp.task('watch', function() {
 	watch('js/*.coffee', function () {
 		gulp.start('coffee');
 	});
-	watch('favicons/*', function () {
+	watch('includes/favicons/*', function () {
 		gulp.start('favicons');
 	});
 });
@@ -54,7 +54,7 @@ gulp.task('coffee', function() {
 
 // Copies favicons to /dist
 gulp.task('favicons', function() {
-	gulp.src('favicons/*').pipe(gulp.dest('dist/favicons/'));
+	gulp.src('includes/favicons/*').pipe(gulp.dest('dist/favicons/'));
 });
 
 // Uploads to server via FTP
@@ -64,11 +64,8 @@ gulp.task('deploy', function() {
 		user: 'username',
 		pass: 'password',
 		parallel: 8,
-		log: util.log
-	}),
-	globs = 'dist/**';
-
-	return gulp.src(globs, { buffer: false })
-		  .pipe(conn.newer('/public_html/weatha'))
-		  .pipe(conn.dest('/public_html/weatha'));
+		log: util.log,
+		debug: util.log
+	});
+	return gulp.src('dist/**', { base: '.', buffer: false }).pipe(conn.dest('/public_html/weatha'));
 });
