@@ -28,15 +28,20 @@ fetchWeather = (lat, lon) ->
 			location = weather.name
 			condition = weather.weather[0].description
 			temperature = Math.round(weather.main.temp)
+			highTemp = Math.round(weather.main.temp_max)
+			lowTemp = Math.round(weather.main.temp_min)
 			windSpeed = Math.round(weather.wind.speed)
-			windDeg = weather.wind.deg
 			directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-			windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
+			if weather.wind.deg is null
+				windDeg = 0
+				windDir = ''
+			else
+				windDeg = weather.wind.deg
+				windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
 			humidity = weather.main.humidity
 
-			document.getElementById('current').innerHTML = '<h1>' + temperature + '&deg;</h1><h3>' + condition + '</h3><p>' + windSpeed + 'mph ' + windDir + ', ' + humidity + '% humidity</p>'
+			document.getElementById('current').innerHTML = '<div><h1>' + temperature + '&deg;</h1><h3>' + condition + '</h3></div><p class="right">' + highTemp + '&deg; &ndash; ' + lowTemp + '&deg;<br/>Wind: ' + windSpeed + 'mph ' + windDir + '<br/>Humidity: ' + humidity + '%</p>'
 			document.getElementById('location').innerHTML = location
-			document.getElementById('location').style.opacity = 1
 	xhr.send(null)
 
 
@@ -55,7 +60,7 @@ fetchForecast = (lat, lon) ->
 				temp = Math.round(day.main.temp)
 				date = day.dt_txt
 				if (date.includes('12:00:00'))
-					element.innerHTML += '<div class="day"><h3>' + temp + '&deg;</h3><small>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</small></div>'
+					element.innerHTML += '<div class="day"><h2>' + temp + '&deg;</h2><p>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</p></div>'
 					document.getElementsByTagName('main')[0].style.opacity = 1
 	xhr.send(null)
 
