@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 	watch= require('gulp-watch');
 
 // Compile everything
-gulp.task('default', ['pug', 'sass', 'coffee']);
+gulp.task('default', ['pug', 'sass', 'coffee', 'favicons']);
 
 // Recompile everything on changing Pug, Sass, or CoffeeScript files
 gulp.task('watch', function() {
@@ -40,6 +40,11 @@ gulp.task('coffee', function() {
 	return gulp.src('js/*.coffee').pipe(coff({
 		bare: true
 	})).on('error', util.log).pipe(gulp.dest('dist/js'));
+});
+
+// Copies favicons to /dist
+gulp.task('favicons', function() {
+	gulp.src('favicons/*').pipe(gulp.dest('dist/favicons/'));
 });
 
 // Uploads to server via FTP
