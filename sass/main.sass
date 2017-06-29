@@ -12,7 +12,6 @@ body
 	margin-top: $head
 	font-family: $sans
 	color: $light
-	text-align: center
 
 header
 	box-shadow: $shade
@@ -20,25 +19,27 @@ header
 	top: 0
 	width: 100%
 	height: $head
-	text-align: left
 	h1
 		padding: 0 15px
 		margin: 10px 0
 		font-weight: normal
-		.right
-			float: right
+		small
+			font-size: 60%
+			margin-left: 10px
 
 footer
 	position: absolute
 	bottom: 0
 	width: 100%
 	color: darken($light, 50%)
+	p
+		padding: 0 15px
 
 a
 	color: inherit
 
 main
-	max-width: 600px
+	max-width: 750px
 	padding: 0 15px
 	margin: $head * 2 auto 0
 	opacity: 0
@@ -50,17 +51,24 @@ main
 		justify-content: space-between
 		align-items: center
 	#current
-		text-align: left
 		h1
 			font-size: 4em
 			margin: 0
 		h3
 			text-transform: capitalize
-		.right
-			text-align: right
+			font-weight: normal
+			margin-top: 0
 	#forecast
+		text-align: center
+		margin-top: 45px
 		h2
-			margin-bottom: 0
-		p
-			margin-top: 5px
-			margin-bottom: 0
+			margin: 10px 0
+		h4
+			margin: 0
+			font-weight: normal
+		small
+			text-transform: uppercase
+
+.right
+	float: right
+	text-align: right

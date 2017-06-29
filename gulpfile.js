@@ -12,8 +12,17 @@ gulp.task('default', ['pug', 'sass', 'coffee', 'favicons']);
 // Recompile everything on changing Pug, Sass, or CoffeeScript files
 gulp.task('watch', function() {
 	gulp.start('default');
-	watch(['*.pug', 'sass/*.sass', 'js/*.coffee'], function () {
-		gulp.start('default');
+	watch(['*.pug', 'includes/*.pug'], function () {
+		gulp.start('pug');
+	});
+	watch('sass/*.sass', function () {
+		gulp.start('sass');
+	});
+	watch('js/*.coffee', function () {
+		gulp.start('coffee');
+	});
+	watch('favicons/*', function () {
+		gulp.start('favicons');
 	});
 });
 
@@ -22,7 +31,8 @@ gulp.task('pug', function() {
 	return gulp.src('*.pug').pipe(pug({
 		locals: {
 			name: 'Weatha',
-			intro: 'simple weather app v1.0.3',
+			version: '1.0.4',
+			intro: 'simple weather app',
 			githubURL: 'https://github.com/pschfr/weatha'
 		}
 	})).pipe(gulp.dest('dist/'));

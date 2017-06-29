@@ -1,6 +1,7 @@
 # Global variables
 unit = 'imperial'
 API_key = 'cb2555990c5309b5ffb90ba6fdea4c62'
+proxy_URL = 'https://paulmakesthe.net/ba-simple-proxy.php?url='
 
 # Attempt to geolocate user
 geolocWeather = () ->
@@ -21,10 +22,10 @@ fetchWeather = (lat, lon) ->
 	owm_URL = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&APPID=' + API_key + '&units=' + unit
 	xhr = new XMLHttpRequest()
 
-	xhr.open('GET', owm_URL, true)
+	xhr.open('GET', proxy_URL + encodeURIComponent(owm_URL), true)
 	xhr.onreadystatechange = () ->
 		if (xhr.readyState == 4 && xhr.status == 200)
-			weather = JSON.parse(xhr.responseText)
+			weather = JSON.parse(xhr.responseText).contents
 			location = weather.name
 			condition = weather.weather[0].description
 			temperature = Math.round(weather.main.temp)
@@ -52,15 +53,16 @@ fetchForecast = (lat, lon) ->
 	element = document.getElementById('forecast')
 	xhr = new XMLHttpRequest()
 
-	xhr.open('GET', owm_URL, true)
+	xhr.open('GET', proxy_URL + encodeURIComponent(owm_URL), true)
 	xhr.onreadystatechange = () ->
 		if (xhr.readyState == 4 && xhr.status == 200)
 			element.innerHTML = ''
-			for day in JSON.parse(xhr.responseText).list
+			for day in JSON.parse(xhr.responseText).contents.list
 				temp = Math.round(day.main.temp)
+				cond = day.weather[0].main
 				date = day.dt_txt
 				if (date.includes('12:00:00'))
-					element.innerHTML += '<div class="day"><h2>' + temp + '&deg;</h2><p>' + new Date(date).toString().split(' ').slice(0, 1) + ' ' + new Date(date).toString().split(' ').slice(1, 3).join(' ') + '</p></div>'
+					element.innerHTML += '<div><small>' + new Date(date).toString().split(' ').slice(0, 1) + '</small><h2>' + temp + '&deg;</h2><p>' + cond + '</p></div>'
 					document.getElementsByTagName('main')[0].style.opacity = 1
 	xhr.send(null)
 
