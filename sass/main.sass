@@ -1,15 +1,21 @@
-$sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif
+// Set variables used in partials later, and other globals
+$base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif
+
 $light: #fff
 $dark:  #333
 $shade: 1px 2px 4px transparentize($dark, 0.5)
+$margin: 10px
+$pad: 15px
 $head: 56px
+$width: 768px
+
+@import "normalize/normalize"
 
 html
 	min-height: 100%
 
 body
 	background: linear-gradient(to bottom, #FD746C, #2C3E50)
-	font-family: $sans
 	color: $light
 
 header
@@ -19,12 +25,12 @@ header
 	width: 100%
 	height: $head
 	h1
-		padding: 0 15px
-		margin: 10px 0
+		padding: 0 $pad
+		margin: $margin 0
 		font-weight: normal
 		small
 			font-size: 60%
-			margin-left: 10px
+			margin-left: $margin
 
 footer
 	position: absolute
@@ -32,7 +38,7 @@ footer
 	width: 100%
 	color: darken($light, 25%)
 	p
-		padding: 0 15px
+		padding: 0 $pad
 		a
 			&:hover, &:focus
 				color: $light
@@ -41,8 +47,8 @@ a
 	color: inherit
 
 main
-	max-width: 750px
-	padding: 0 15px
+	max-width: $width
+	padding: 0 $pad
 	margin: $head * 2 auto 0
 	opacity: 0
 	transition: all 1s
@@ -51,18 +57,20 @@ main
 		justify-content: space-between
 		align-items: center
 	#current
-		h1
-			font-size: 4em
-			margin: 0
-		h3
-			text-transform: capitalize
-			font-weight: normal
-			margin-top: 0
+		div
+			text-align: center
+			h1
+				font-size: 4em
+				margin: 0
+			h3
+				text-transform: capitalize
+				font-weight: normal
+				margin-top: 0
 	#forecast
 		text-align: center
-		margin-top: 45px
+		margin-top: $pad * 3
 		h2
-			margin: 10px 0
+			margin: $margin 0
 		p
 			text-transform: capitalize
 		small
@@ -71,3 +79,20 @@ main
 .right
 	float: right
 	text-align: right
+
+@media (max-width: $width / 2)
+	header
+		small
+			display: none
+	main #current
+		display: block
+		text-align: center
+		.right
+			float: none
+			text-align: inherit
+	footer
+		text-align: center
+		.right
+			float: none
+			text-align: inherit
+			display: block

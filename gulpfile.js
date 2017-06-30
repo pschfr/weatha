@@ -7,12 +7,12 @@ var gulp = require('gulp'),
 	watch= require('gulp-watch');
 
 // Compile everything
-gulp.task('default', ['pug', 'sass', 'coffee', 'favicons']);
+gulp.task('default', ['pug', 'sass', 'coffee']);
 
 // Recompile everything on changing Pug, Sass, or CoffeeScript files
 gulp.task('watch', function() {
 	gulp.start('default');
-	watch(['*.pug', 'includes/*.pug'], function () {
+	watch(['index.pug', 'includes/*.pug'], function () {
 		gulp.start('pug');
 	});
 	watch('sass/*.sass', function () {
@@ -21,17 +21,14 @@ gulp.task('watch', function() {
 	watch('js/*.coffee', function () {
 		gulp.start('coffee');
 	});
-	watch('includes/favicons/*', function () {
-		gulp.start('favicons');
-	});
 });
 
 // Compiles Pug templates
 gulp.task('pug', function() {
-	return gulp.src('*.pug').pipe(pug({
+	return gulp.src('index.pug').pipe(pug({
 		locals: {
 			name: 'Weatha',
-			version: '1.0.4',
+			version: '1.0.5',
 			intro: 'simple weather app',
 			githubURL: 'https://github.com/pschfr/weatha'
 		}

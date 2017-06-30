@@ -16,12 +16,24 @@ html(lang="en")
 		meta(name="application-name" content=name)
 		meta(name="msapplication-config" content="/favicons/browserconfig.xml")
 		meta(name="theme-color" content="#fd746c")
-		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css")
 		link(rel="stylesheet" href="/css/main.css")
 	body
 		include includes/header.pug
 		main
 			#current
+				canvas(id="currently" width="150" height="150")
+				div
+					h1#temp
+					h3#conditions
+				p.right
+					span#highlow
+					br
+					| Wind: 
+					span#wind
+					br
+					|  Humidity: 
+					span#humidity
 			#forecast
 		include includes/footer.pug
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/skycons/1396634940/skycons.min.js")
 		script(src="/js/app.js")

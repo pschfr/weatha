@@ -2,6 +2,10 @@
 unit = 'imperial'
 API_key = 'cb2555990c5309b5ffb90ba6fdea4c62'
 proxy_URL = 'https://paulmakesthe.net/ba-simple-proxy.php?url='
+directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+icons_list = ['clear-day', 'clear-night', 'partly-cloudy-day', 'partly-cloudy-night', 'cloudy', 'rain', 'sleet', 'snow', 'wind', 'fog']
+
+
 
 # Attempt to geolocate user
 geolocWeather = () ->
@@ -32,7 +36,6 @@ fetchWeather = (lat, lon) ->
 			highTemp = Math.round(weather.main.temp_max)
 			lowTemp = Math.round(weather.main.temp_min)
 			windSpeed = Math.round(weather.wind.speed)
-			directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 			if weather.wind.deg is null
 				windDeg = 0
 				windDir = ''
@@ -41,8 +44,23 @@ fetchWeather = (lat, lon) ->
 				windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
 			humidity = weather.main.humidity
 
-			document.getElementById('current').innerHTML = '<div><h1>' + temperature + '&deg;</h1><h3>' + condition + '</h3></div><p class="right">' + highTemp + '&deg; &ndash; ' + lowTemp + '&deg;<br/>Wind: ' + windSpeed + 'mph ' + windDir + '<br/>Humidity: ' + humidity + '%</p>'
+			document.getElementById('temp').innerHTML = temperature + '&deg;'
+			document.getElementById('conditions').innerHTML = condition
+			document.getElementById('highlow').innerHTML =  highTemp + '&deg; &ndash; ' + lowTemp
+			document.getElementById('wind').innerHTML = windSpeed + 'mph ' + windDir
+			document.getElementById('humidity').innerHTML = humidity + '%'
 			document.getElementById('location').innerHTML = location
+
+			icon = switch
+				when weather.weather[0].main = 'Clouds' then icons_list[4]
+				when weather.weather[0].main = 'Clear' then icons_list[0]
+				when weather.weather[0].main = 'Atmosphere' then icons_list[9]
+				when weather.weather[0].main = 'Snow' then icons_list[7]
+				when weather.weather[0].main = 'Rain' then icons_list[5]
+				when weather.weather[0].main = 'Drizzle', 'Thunderstorm' then icons_list[6]
+				else icon = icons_list[0]
+
+			renderIcons('currently', icon)
 	xhr.send(null)
 
 
@@ -66,4 +84,18 @@ fetchForecast = (lat, lon) ->
 					document.getElementsByTagName('main')[0].style.opacity = 1
 	xhr.send(null)
 
+
+
+# Render a new Skycon
+renderIcons = (element, icon) ->
+	skycons = new Skycons({
+		'color': 'white',
+		'resizeClear': true
+	})
+	skycons.add(element, icon)
+	skycons.play()
+
+
+
+# Run everything
 geolocWeather()
