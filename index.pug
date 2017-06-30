@@ -6,17 +6,17 @@ html(lang="en")
 		meta(name="viewport" content="width=device-width, initial-scale=1")
 		meta(name="description" content=intro + ', v' + version)
 		title #{name} &mdash; #{intro}, v#{version}
-		link(rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png")
-		link(rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png")
-		link(rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png")
-		link(rel="manifest" href="/favicons/manifest.json")
-		link(rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#fd746c")
-		link(rel="shortcut icon" href="/favicons/favicon.ico")
+		link(rel="apple-touch-icon" sizes="180x180" href=base + "favicons/apple-touch-icon.png")
+		link(rel="icon" type="image/png" sizes="32x32" href=base + "favicons/favicon-32x32.png")
+		link(rel="icon" type="image/png" sizes="16x16" href=base + "favicons/favicon-16x16.png")
+		link(rel="manifest" href=base + "favicons/manifest.json")
+		link(rel="mask-icon" href=base + "favicons/safari-pinned-tab.svg" color="#fd746c")
+		link(rel="shortcut icon" href=base + "favicons/favicon.ico")
 		meta(name="apple-mobile-web-app-title" content=name)
 		meta(name="application-name" content=name)
-		meta(name="msapplication-config" content="/favicons/browserconfig.xml")
+		meta(name="msapplication-config" content=base + "favicons/browserconfig.xml")
 		meta(name="theme-color" content="#fd746c")
-		link(rel="stylesheet" href="/css/main.css")
+		link(rel="stylesheet" href=base + "css/main.css")
 	body
 		include includes/header.pug
 		main
@@ -36,4 +36,4 @@ html(lang="en")
 			#forecast
 		include includes/footer.pug
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/skycons/1396634940/skycons.min.js")
-		script(src="/js/app.js")
+		script(src=base + "js/app.js")

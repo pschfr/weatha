@@ -27,6 +27,8 @@ gulp.task('watch', function() {
 gulp.task('pug', function() {
 	return gulp.src('index.pug').pipe(pug({
 		locals: {
+			base: '/',
+			// base: '/weatha/',
 			name: 'Weatha',
 			version: '1.0.5',
 			intro: 'simple weather app',
@@ -64,5 +66,5 @@ gulp.task('deploy', function() {
 		log: util.log,
 		debug: util.log
 	});
-	return gulp.src('dist/**', { base: '.', buffer: false }).pipe(conn.dest('/public_html/weatha'));
+	return gulp.src('dist/**', { buffer: false }).pipe(conn.dest('/public_html/weatha'));
 });
