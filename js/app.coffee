@@ -46,7 +46,7 @@ fetchWeather = (lat, lon) ->
 
 			document.getElementById('temp').innerHTML = temperature + '&deg;'
 			document.getElementById('conditions').innerHTML = condition
-			document.getElementById('highlow').innerHTML =  highTemp + '&deg; &ndash; ' + lowTemp
+			document.getElementById('highlow').innerHTML =  highTemp + '&deg; &ndash; ' + lowTemp + '&deg;'
 			document.getElementById('wind').innerHTML = windSpeed + 'mph ' + windDir
 			document.getElementById('humidity').innerHTML = humidity + '%'
 			document.getElementById('location').innerHTML = location

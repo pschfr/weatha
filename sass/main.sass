@@ -15,7 +15,7 @@ html
 	min-height: 100%
 
 body
-	background: linear-gradient(to bottom, #FD746C, #2C3E50)
+	background: linear-gradient(to bottom, #FD746C, #2C3E50) center/cover no-repeat
 	color: $light
 
 header
@@ -57,6 +57,9 @@ main
 		justify-content: space-between
 		align-items: center
 	#current
+		canvas
+			width: 150px
+			height: 150px
 		div
 			text-align: center
 			h1
@@ -84,14 +87,20 @@ main
 	header
 		small
 			display: none
-	main #current
-		display: block
-		text-align: center
-		.right
-			float: none
-			text-align: inherit
+	main
+		padding: 0
+		margin-top: $head
+		#current
+			display: block
+			text-align: center
+			.right
+				float: none
+				text-align: inherit
 	footer
 		text-align: center
+		position: relative
+		p
+			line-height: 1.5
 		.right
 			float: none
 			text-align: inherit

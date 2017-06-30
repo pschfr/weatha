@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 	watch= require('gulp-watch');
 
 // Compile everything
-gulp.task('default', ['pug', 'sass', 'coffee']);
+gulp.task('default', ['pug', 'sass', 'coffee', 'favicons']);
 
 // Recompile everything on changing Pug, Sass, or CoffeeScript files
 gulp.task('watch', function() {
