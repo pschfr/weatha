@@ -9,7 +9,7 @@ icons_list = ['clear-day', 'clear-night', 'partly-cloudy-day', 'partly-cloudy-ni
 
 # Attempt to geolocate user
 geolocWeather = () ->
-	if ('geolocation' in navigator) # I don't know if this works
+	if `('geolocation' in navigator)`
 		navigator.geolocation.getCurrentPosition((position) ->
 			fetchWeather(position.coords.latitude, position.coords.longitude)
 			fetchForecast(position.coords.latitude, position.coords.longitude)
