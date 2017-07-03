@@ -29,20 +29,21 @@ fetchWeather = (lat, lon) ->
 	xhr.open('GET', proxy_URL + encodeURIComponent(owm_URL), true)
 	xhr.onreadystatechange = () ->
 		if (xhr.readyState == 4 && xhr.status == 200)
-			weather = JSON.parse(xhr.responseText).contents
-			location = weather.name
-			condition = weather.weather[0].description
-			temperature = Math.round(weather.main.temp)
-			highTemp = Math.round(weather.main.temp_max)
-			lowTemp = Math.round(weather.main.temp_min)
-			windSpeed = Math.round(weather.wind.speed)
-			if weather.wind.deg is null
+			response = JSON.parse(xhr.responseText).contents
+			location = response.name
+			main = response.weather[0].main
+			condition = response.weather[0].description
+			temperature = Math.round(response.main.temp)
+			highTemp = Math.round(response.main.temp_max)
+			lowTemp = Math.round(response.main.temp_min)
+			windSpeed = Math.round(response.wind.speed)
+			if response.wind.deg is null
 				windDeg = 0
 				windDir = ''
 			else
-				windDeg = weather.wind.deg
+				windDeg = response.wind.deg
 				windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
-			humidity = weather.main.humidity
+			humidity = response.main.humidity
 
 			document.getElementById('temp').innerHTML = temperature + '&deg;'
 			document.getElementById('conditions').innerHTML = condition
@@ -51,14 +52,18 @@ fetchWeather = (lat, lon) ->
 			document.getElementById('humidity').innerHTML = humidity + '%'
 			document.getElementById('location').innerHTML = location
 
-			icon = switch
-				when weather.weather[0].main = 'Clouds' then icons_list[4]
-				when weather.weather[0].main = 'Clear' then icons_list[0]
-				when weather.weather[0].main = 'Atmosphere' then icons_list[9]
-				when weather.weather[0].main = 'Snow' then icons_list[7]
-				when weather.weather[0].main = 'Rain' then icons_list[5]
-				when weather.weather[0].main = 'Drizzle', 'Thunderstorm' then icons_list[6]
-				else icon = icons_list[0]
+			if main == 'Clouds'
+				icon = icons_list[4]
+			if main == 'Clear'
+				icon = icons_list[0]
+			if main == 'Atmosphere'
+				icon = icons_list[9]
+			if main == 'Snow'
+				icon = icons_list[7]
+			if main == 'Rain' or main == 'Thunderstorm'
+				icon = icons_list[5]
+			if main == 'Drizzle'
+				icon = icons_list[6]
 
 			renderIcons('currently', icon)
 	xhr.send(null)
@@ -92,7 +97,7 @@ renderIcons = (element, icon) ->
 		'color': 'white',
 		'resizeClear': true
 	})
-	skycons.add(element, icon)
+	skycons.set(element, icon)
 	skycons.play()
 
 
