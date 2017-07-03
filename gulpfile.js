@@ -4,10 +4,11 @@ var gulp = require('gulp'),
 	pug  = require('gulp-pug')
 	sass = require('gulp-sass'),
 	coff = require('gulp-coffeescript'),
+	ugly = require('gulp-uglifyjs'),
 	watch= require('gulp-watch');
 
 // Compile everything
-gulp.task('default', ['pug', 'sass', 'coffee', 'favicons']);
+gulp.task('default', ['pug', 'sass', 'uglify', 'favicons']);
 
 // Recompile everything on changing Pug, Sass, or CoffeeScript files
 gulp.task('watch', function() {
@@ -44,11 +45,17 @@ gulp.task('sass', function() {
 	}).on('error', sass.logError)).pipe(gulp.dest('dist/css'));
 });
 
-// Compiles CoffeeScript
+// Moves vanilla JS, compiles CoffeeScript
 gulp.task('coffee', function() {
+	gulp.src('js/*.js').pipe(gulp.dest('dist/js'));
 	return gulp.src('js/*.coffee').pipe(coff({
 		bare: true
 	})).on('error', util.log).pipe(gulp.dest('dist/js'));
+});
+
+// Concatenates and minifies JavaScript
+gulp.task('uglify', ['coffee'], function() {
+	return gulp.src('dist/js/*.js').pipe(ugly('app.min.js')).pipe(gulp.dest('dist/js'));
 });
 
 // Copies favicons to /dist
