@@ -20,7 +20,7 @@ gulp.task('watch', function() {
 		gulp.start('sass');
 	});
 	watch('js/*.coffee', function () {
-		gulp.start('coffee');
+		gulp.start('uglify');
 	});
 });
 
@@ -55,7 +55,7 @@ gulp.task('coffee', function() {
 
 // Concatenates and minifies JavaScript
 gulp.task('uglify', ['coffee'], function() {
-	return gulp.src('dist/js/*.js').pipe(ugly('app.min.js')).pipe(gulp.dest('dist/js'));
+	return gulp.src(['dist/js/*.js', '!dist/js/*.min.js']).pipe(ugly('app.min.js')).pipe(gulp.dest('dist/js'));
 });
 
 // Copies favicons to /dist
