@@ -64,6 +64,8 @@ fetchWeather = (lat, lon) ->
 				icon = icons_list[5]
 			if main == 'Drizzle'
 				icon = icons_list[6]
+			if main == 'Fog' or main == 'Mist'
+				icon = icons_list[9]
 
 			renderIcons('currently', icon)
 	xhr.send(null)
