@@ -1,11 +1,12 @@
 {
   "name": "weatha",
-  "version": "1.0.5",
-  "description": "simple weather app, v1.0.5",
+  "version": "1.0.6",
+  "description": "simple weather app, v1.0.6",
   "main": "dist/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"gulp watch\" \"http-server -a localhost -c-1 dist\""
+    "start": "concurrently \"gulp watch\" \"http-server -a localhost -c-1 dist\"",
+    "deploy": "gulp default; gulp deploy; git checkout gulpfile.js; gulp default"
   },
   "repository": {
     "type": "git",

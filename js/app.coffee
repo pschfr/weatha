@@ -13,6 +13,9 @@ geolocWeather = () ->
 		navigator.geolocation.getCurrentPosition((position) ->
 			fetchWeather(position.coords.latitude, position.coords.longitude)
 			fetchForecast(position.coords.latitude, position.coords.longitude)
+		, (error) ->
+			fetchWeather('40.4406', '-79.9959')
+			fetchForecast('40.4406', '-79.9959')
 		)
 	else
 		fetchWeather('40.4406', '-79.9959')
@@ -37,7 +40,7 @@ fetchWeather = (lat, lon) ->
 			highTemp = Math.round(response.main.temp_max)
 			lowTemp = Math.round(response.main.temp_min)
 			windSpeed = Math.round(response.wind.speed)
-			if response.wind.deg is null
+			if not response.wind.deg
 				windDeg = 0
 				windDir = ''
 			else
@@ -52,19 +55,23 @@ fetchWeather = (lat, lon) ->
 			document.getElementById('humidity').innerHTML = humidity + '%'
 			document.getElementById('location').innerHTML = location
 
-			if main == 'Clouds'
-				icon = icons_list[4]
-			if main == 'Clear'
+			if main == 'Clouds' and new Date().getHours() >= 5 and new Date().getHours() <= 20
+				icon = icons_list[2]
+			else if main == 'Clouds' and new Date().getHours() < 5 and new Date().getHours() > 20
+				icon = icons_list[3]
+			else if main == 'Clear' and new Date().getHours() >= 5 and new Date().getHours() <= 20
 				icon = icons_list[0]
-			if main == 'Atmosphere'
+			else if main == 'Clear' and new Date().getHours() < 5 and new Date().getHours() > 20
+				icon = icons_list[1]
+			else if main == 'Atmosphere'
 				icon = icons_list[9]
-			if main == 'Snow'
+			else if main == 'Snow'
 				icon = icons_list[7]
-			if main == 'Rain' or main == 'Thunderstorm'
+			else if main == 'Rain' or main == 'Thunderstorm'
 				icon = icons_list[5]
-			if main == 'Drizzle'
+			else if main == 'Drizzle'
 				icon = icons_list[6]
-			if main == 'Fog' or main == 'Mist'
+			else if main == 'Fog' or main == 'Mist'
 				icon = icons_list[9]
 
 			renderIcons('currently', icon)
@@ -95,10 +102,7 @@ fetchForecast = (lat, lon) ->
 
 # Render a new Skycon
 renderIcons = (element, icon) ->
-	skycons = new Skycons({
-		'color': 'white',
-		'resizeClear': true
-	})
+	skycons = new Skycons()
 	skycons.set(element, icon)
 	skycons.play()
 

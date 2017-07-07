@@ -3,6 +3,8 @@ $base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvet
 
 $light: #fff
 $dark:  #333
+$pink: #FD746C
+$blue: #2C3E50
 $shade: 1px 2px 4px transparentize($dark, 0.5)
 $margin: 10px
 $pad: 15px
@@ -15,15 +17,16 @@ html
 	min-height: 100%
 
 body
-	background: linear-gradient(to bottom, #FD746C, #2C3E50) center/cover no-repeat
+	background: linear-gradient($pink, $blue) center/cover no-repeat
 	color: $light
 
 header
 	box-shadow: $shade
-	position: absolute
+	position: fixed
 	top: 0
 	width: 100%
 	height: $head
+	background-color: $pink
 	h1
 		padding: 0 $pad
 		margin: $margin 0
@@ -76,6 +79,7 @@ main
 			margin: $margin 0
 		p
 			text-transform: capitalize
+			word-spacing: 1000px
 		small
 			text-transform: uppercase
 

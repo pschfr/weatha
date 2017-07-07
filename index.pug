@@ -7,7 +7,7 @@ html(lang="en")
 		meta(name="description" content=intro + ', v' + version)
 		title #{name} &mdash; #{intro}, v#{version}
 		include includes/favicon
-		link(rel="stylesheet" href=base + "css/main.css")
+		link(rel="stylesheet" href=base + "css/main.css?" + version)
 	body
 		include includes/header
 		main
@@ -26,4 +26,6 @@ html(lang="en")
 					span#humidity
 			#forecast
 		include includes/footer
-		script(src=base + "js/app.min.js")
+		script(src=base + "js/app.min.js?" + version)
+		if base == '/weatha/'
+			include includes/analytics
