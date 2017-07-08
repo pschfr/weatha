@@ -53,8 +53,6 @@ main
 	max-width: $width
 	padding: 0 $pad
 	margin: $head * 2 auto 0
-	opacity: 0
-	transition: all 1s
 	#current, #forecast
 		display: flex
 		justify-content: space-between
@@ -79,9 +77,12 @@ main
 			margin: $margin 0
 		p
 			text-transform: capitalize
-			word-spacing: 1000px
 		small
 			text-transform: uppercase
+
+.fadein
+	opacity: 0
+	transition: all 1s
 
 .right
 	float: right
@@ -100,6 +101,9 @@ main
 			.right
 				float: none
 				text-align: inherit
+		#forecast
+			p
+				word-spacing: 1000px
 	footer
 		text-align: center
 		position: relative

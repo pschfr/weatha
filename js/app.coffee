@@ -57,11 +57,11 @@ fetchWeather = (lat, lon) ->
 
 			if main == 'Clouds' and new Date().getHours() >= 5 and new Date().getHours() <= 20
 				icon = icons_list[2]
-			else if main == 'Clouds' and new Date().getHours() < 5 and new Date().getHours() > 20
+			else if main == 'Clouds'
 				icon = icons_list[3]
 			else if main == 'Clear' and new Date().getHours() >= 5 and new Date().getHours() <= 20
 				icon = icons_list[0]
-			else if main == 'Clear' and new Date().getHours() < 5 and new Date().getHours() > 20
+			else if main == 'Clear'
 				icon = icons_list[1]
 			else if main == 'Atmosphere'
 				icon = icons_list[9]
@@ -95,7 +95,8 @@ fetchForecast = (lat, lon) ->
 				date = day.dt_txt.replace(/-/g, "/")
 				if (date.includes('12:00:00'))
 					element.innerHTML += '<div><small>' + new Date(date).toString().split(' ').slice(0, 1) + '</small><h2>' + temp + '&deg;</h2><p>' + cond + '</p></div>'
-					document.getElementsByTagName('main')[0].style.opacity = 1
+					for faded in document.getElementsByClassName('fadein')
+						faded.style.opacity = 1
 	xhr.send(null)
 
 
