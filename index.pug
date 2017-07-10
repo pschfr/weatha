@@ -10,6 +10,7 @@ html(lang="en")
 		link(rel="stylesheet" href=base + "css/main.css?" + version)
 	body
 		include includes/header
+		canvas(class="fadeout" id="spinner" width="300" height="300")
 		main.fadein
 			#current
 				canvas(id="currently" width="300" height="300")
@@ -24,6 +25,10 @@ html(lang="en")
 					br
 					|  Humidity: 
 					span#humidity
+					br
+					|  Precipitation: 
+					span#precip
+			p#daily
 			#forecast
 		include includes/footer
 		script(src=base + "js/app.min.js?" + version)

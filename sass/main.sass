@@ -31,23 +31,20 @@ header
 		padding: 0 $pad
 		margin: $margin 0
 		font-weight: normal
-		small
-			font-size: 60%
-			margin-left: $margin
 
 footer
 	position: absolute
 	bottom: 0
 	width: 100%
 	color: darken($light, 25%)
+	text-transform: uppercase
+	font-size: $pad - 3
 	p
 		padding: 0 $pad
 		a
+			color: inherit
 			&:hover, &:focus
 				color: $light
-
-a
-	color: inherit
 
 main
 	max-width: $width
@@ -57,28 +54,39 @@ main
 		display: flex
 		justify-content: space-between
 		align-items: center
+	#current div, #daily
+		text-align: center
 	#current
 		canvas
 			width: 150px
 			height: 150px
 		div
-			text-align: center
 			h1
 				font-size: 4em
-				margin: 0
 			h3
-				text-transform: capitalize
 				font-weight: normal
-				margin-top: 0
+		p, h1, h3
+			margin: 0
 	#forecast
 		text-align: center
 		margin-top: $pad * 3
-		h2
-			margin: $margin 0
 		p
 			text-transform: capitalize
+			margin: 0
 		small
 			text-transform: uppercase
+			display: block
+		canvas
+			width: 50px
+			height: 50px
+			margin: $pad auto
+
+#spinner
+	position: absolute
+	top:  calc(50% - 75px)
+	left: calc(50% - 75px)
+	height: 150px
+	width:  150px
 
 .fadein
 	opacity: 0
@@ -89,9 +97,6 @@ main
 	text-align: right
 
 @media (max-width: $width / 2)
-	header
-		small
-			display: none
 	main
 		padding: 0
 		margin-top: $head + 10
@@ -102,8 +107,14 @@ main
 				float: none
 				text-align: inherit
 		#forecast
-			p
-				word-spacing: 1000px
+			display: block
+			margin-bottom: $pad * 3
+			overflow-x: scroll
+			overflow-y: hidden
+			white-space: nowrap
+			div
+				width: 28%
+				display: inline-block
 	footer
 		text-align: center
 		position: relative

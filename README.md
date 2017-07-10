@@ -1,5 +1,5 @@
 # Weatha
-Simple weather app built with `npm`, `gulp`, CoffeeScript, Pug, and Sass; v1.0.6
+Simple weather app built with `npm`, `gulp`, CoffeeScript, Pug, and Sass; v1.1.0
 
 ![](screenshot.png)
 

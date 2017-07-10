@@ -1,102 +1,70 @@
 # Global variables
-unit = 'imperial'
-API_key = 'cb2555990c5309b5ffb90ba6fdea4c62'
-proxy_URL = 'https://paulmakesthe.net/ba-simple-proxy.php?url='
+units      = 'auto'
+API_key    = '3dc48ab835ed1b4369c089d0e742ff03'
+proxy_URL  = 'https://paulmakesthe.net/ba-simple-proxy.php?url='
+darkSkyURL = 'https://api.darksky.net/forecast/' + API_key + '/'
 directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-icons_list = ['clear-day', 'clear-night', 'partly-cloudy-day', 'partly-cloudy-night', 'cloudy', 'rain', 'sleet', 'snow', 'wind', 'fog']
-
+exclusions = 'hourly,alerts'
+pittsburgh = '40.4406,-79.9959'
 
 
 # Attempt to geolocate user
 geolocWeather = () ->
 	if `('geolocation' in navigator)`
 		navigator.geolocation.getCurrentPosition((position) ->
-			fetchWeather(position.coords.latitude, position.coords.longitude)
-			fetchForecast(position.coords.latitude, position.coords.longitude)
+			getWeather(position.coords.latitude + ',' + position.coords.longitude)
 		, (error) ->
-			fetchWeather('40.4406', '-79.9959')
-			fetchForecast('40.4406', '-79.9959')
+			getWeather(pittsburgh)
+			console.error(error)
 		)
 	else
-		fetchWeather('40.4406', '-79.9959')
-		fetchForecast('40.4406', '-79.9959')
+		getWeather(pittsburgh)
 	t = setTimeout(geolocWeather, 300000) # Every 5 min
 
 
 
-# Fetch weather from OpenWeatherMap
-fetchWeather = (lat, lon) ->
-	owm_URL = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&APPID=' + API_key + '&units=' + unit
+# gets info from Dark Sky
+getWeather = (location) ->
 	xhr = new XMLHttpRequest()
-
-	xhr.open('GET', proxy_URL + encodeURIComponent(owm_URL), true)
+	xhr.open('GET', proxy_URL + encodeURIComponent(darkSkyURL + location + '?units=' + units + '&exclude=' + exclusions), true)
 	xhr.onreadystatechange = () ->
-		if (xhr.readyState == 4 && xhr.status == 200)
-			response = JSON.parse(xhr.responseText).contents
-			location = response.name
-			main = response.weather[0].main
-			condition = response.weather[0].description
-			temperature = Math.round(response.main.temp)
-			highTemp = Math.round(response.main.temp_max)
-			lowTemp = Math.round(response.main.temp_min)
-			windSpeed = Math.round(response.wind.speed)
-			if not response.wind.deg
-				windDeg = 0
-				windDir = ''
-			else
-				windDeg = response.wind.deg
-				windDir = directions[(Math.floor((windDeg / 22.5) + 0.5) % 16)]
-			humidity = response.main.humidity
+		if (xhr.readyState == 4 and xhr.status == 200)
+				weather = JSON.parse(xhr.responseText).contents
+				# console.log(weather)
 
-			document.getElementById('temp').innerHTML = temperature + '&deg;'
-			document.getElementById('conditions').innerHTML = condition
-			document.getElementById('highlow').innerHTML =  highTemp + '&deg; &ndash; ' + lowTemp + '&deg;'
-			document.getElementById('wind').innerHTML = windSpeed + 'mph ' + windDir
-			document.getElementById('humidity').innerHTML = humidity + '%'
-			document.getElementById('location').innerHTML = location
+				if not weather.currently.windBearing
+					windDir = ''
+				else
+					windDir = directions[(Math.floor((weather.currently.windBearing / 22.5) + 0.5) % 16)]
+					if weather.flags.units == 'us'
+						windUnit = 'mph'
+					else if weather.flags.units == 'si'
+						windUnit = 'kph'
 
-			if main == 'Clouds' and new Date().getHours() >= 5 and new Date().getHours() <= 20
-				icon = icons_list[2]
-			else if main == 'Clouds'
-				icon = icons_list[3]
-			else if main == 'Clear' and new Date().getHours() >= 5 and new Date().getHours() <= 20
-				icon = icons_list[0]
-			else if main == 'Clear'
-				icon = icons_list[1]
-			else if main == 'Atmosphere'
-				icon = icons_list[9]
-			else if main == 'Snow'
-				icon = icons_list[7]
-			else if main == 'Rain' or main == 'Thunderstorm'
-				icon = icons_list[5]
-			else if main == 'Drizzle'
-				icon = icons_list[6]
-			else if main == 'Fog' or main == 'Mist'
-				icon = icons_list[9]
+				renderIcons('currently', weather.currently.icon)
+				document.getElementById('temp').innerHTML = Math.round(weather.currently.temperature) + '&deg;'
+				if weather.minutely
+					document.getElementById('conditions').innerHTML = weather.minutely.summary
+				document.getElementById('wind').innerHTML = Math.round(weather.currently.windSpeed) + windUnit + ' ' + windDir
+				document.getElementById('humidity').innerHTML = Math.round((weather.currently.humidity * 100)) + '%'
+				document.getElementById('precip').innerHTML = Math.round((weather.currently.precipProbability * 100)) + '%'
+				document.getElementById('daily').innerHTML = weather.daily.summary
 
-			renderIcons('currently', icon)
-	xhr.send(null)
+				# Loop over forecast info, adding icons into blank array for later usage
+				days = []
+				document.getElementById('forecast').innerHTML = ''
+				for day, index in weather.daily.data
+					if index < 5
+						# console.log(day)
+						today = new Date(day.time * 1000)
+						document.getElementById('forecast').innerHTML += '<div title="' + day.summary + '"><small>' + today.toString().split(' ').slice(0, 3).join(' ') + '</small><canvas id="day' + index + '" height="100" width="100"></canvas><p>' + Math.round(day.temperatureMax) + '&deg; &ndash; ' + Math.round(day.temperatureMin) + '&deg;</p></div>'
+						days.push(['day' + index, day.icon])
 
+				# Loop over icon array, drawing icons
+				for icon in days
+					renderIcons(icon[0], icon[1])
 
-
-# Fetch forecast from OpenWeatherMap
-fetchForecast = (lat, lon) ->
-	owm_URL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&APPID=' + API_key + '&units=' + unit
-	element = document.getElementById('forecast')
-	xhr = new XMLHttpRequest()
-
-	xhr.open('GET', proxy_URL + encodeURIComponent(owm_URL), true)
-	xhr.onreadystatechange = () ->
-		if (xhr.readyState == 4 && xhr.status == 200)
-			element.innerHTML = ''
-			for day in JSON.parse(xhr.responseText).contents.list
-				temp = Math.round(day.main.temp)
-				cond = day.weather[0].description
-				date = day.dt_txt.replace(/-/g, "/")
-				if (date.includes('12:00:00'))
-					element.innerHTML += '<div><small>' + new Date(date).toString().split(' ').slice(0, 1) + '</small><h2>' + temp + '&deg;</h2><p>' + cond + '</p></div>'
-					for faded in document.getElementsByClassName('fadein')
-						faded.style.opacity = 1
+				fadeIn()
 	xhr.send(null)
 
 
@@ -109,5 +77,44 @@ renderIcons = (element, icon) ->
 
 
 
+# Render loading spinner
+renderSpinner = () ->
+	canvas = document.getElementById('spinner')
+	context = canvas.getContext('2d')
+	start = new Date()
+	lines = 16
+	cW = context.canvas.width
+	cH = context.canvas.height
+
+	draw = () ->
+		rotation = parseInt(((new Date() - start) / 1000) * lines) / lines
+		context.save()
+		context.clearRect(0, 0, cW, cH)
+		context.translate(cW / 2, cH / 2)
+		context.rotate(Math.PI * 2 * rotation)
+		for i in [0 .. lines]
+			context.beginPath()
+			context.rotate(Math.PI * 2 / lines)
+			context.moveTo(cW / 10, 0)
+			context.lineTo(cW / 4, 0)
+			context.lineWidth = cW / 30
+			context.strokeStyle = "rgba(255, 255, 255," + i / lines + ")"
+			context.stroke()
+		context.restore()
+	window.setInterval(draw, 1000 / 30)
+
+
+
+# Fade elements in
+fadeIn = () ->
+	for fadedOut in document.getElementsByClassName('fadeout')
+		fadedOut.style.opacity = 0
+		fadedOut.style.display = 'none'
+	for fadedIn in document.getElementsByClassName('fadein')
+		fadedIn.style.opacity = 1
+
+
+
 # Run everything
+renderSpinner()
 geolocWeather()

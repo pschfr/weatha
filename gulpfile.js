@@ -16,10 +16,10 @@ gulp.task('watch', function() {
 	watch(['index.pug', 'includes/*.pug'], function () {
 		gulp.start('pug');
 	});
-	watch('sass/*.sass', function () {
+	watch('sass/*', function () {
 		gulp.start('sass');
 	});
-	watch('js/*.coffee', function () {
+	watch('js/*', function () {
 		gulp.start('uglify');
 	});
 });
@@ -31,7 +31,7 @@ gulp.task('pug', function() {
 			base: '/',
 			// base: '/weatha/',
 			name: 'Weatha',
-			version: '1.0.6',
+			version: '1.1.0',
 			intro: 'simple weather app',
 			githubURL: 'https://github.com/pschfr/weatha'
 		}
