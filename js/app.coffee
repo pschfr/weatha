@@ -4,8 +4,11 @@ API_key    = '3dc48ab835ed1b4369c089d0e742ff03'
 proxy_URL  = 'https://paulmakesthe.net/ba-simple-proxy.php?url='
 darkSkyURL = 'https://api.darksky.net/forecast/' + API_key + '/'
 directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-exclusions = 'hourly,alerts'
+exclusions = 'hourly'
 pittsburgh = '40.4406,-79.9959'
+
+# Used for debugging
+logging = false
 
 
 # Attempt to geolocate user
@@ -13,9 +16,12 @@ geolocWeather = () ->
 	if `('geolocation' in navigator)`
 		navigator.geolocation.getCurrentPosition((position) ->
 			getWeather(position.coords.latitude + ',' + position.coords.longitude)
+			if logging
+				console.log(position)
 		, (error) ->
 			getWeather(pittsburgh)
-			console.error(error)
+			if logging
+				console.error(error)
 		)
 	else
 		getWeather(pittsburgh)
@@ -30,7 +36,8 @@ getWeather = (location) ->
 	xhr.onreadystatechange = () ->
 		if (xhr.readyState == 4 and xhr.status == 200)
 				weather = JSON.parse(xhr.responseText).contents
-				# console.log(weather)
+				if logging
+					console.log(weather)
 
 				if not weather.currently.windBearing
 					windDir = ''
@@ -50,21 +57,30 @@ getWeather = (location) ->
 				document.getElementById('precip').innerHTML = Math.round((weather.currently.precipProbability * 100)) + '%'
 				document.getElementById('daily').innerHTML = weather.daily.summary
 
+				if weather.alerts
+					if logging
+						console.log(weather.alerts)
+					document.getElementById('alerts').innerHTML = ''
+					for alert, index in weather.alerts
+						document.getElementById('alerts').innerHTML += '<a href="' + alert.uri + '" target="_blank" title="' + alert.description + '">' + alert.title + '</a>'
+						if index > 0
+							document.getElementById('alerts').innerHTML += '<br/>'
+
 				# Loop over forecast info, adding icons into blank array for later usage
-				days = []
+				dayIcons = []
 				document.getElementById('forecast').innerHTML = ''
 				for day, index in weather.daily.data
-					if index < 5
-						# console.log(day)
-						today = new Date(day.time * 1000)
-						document.getElementById('forecast').innerHTML += '<div title="' + day.summary + '"><small>' + today.toString().split(' ').slice(0, 3).join(' ') + '</small><canvas id="day' + index + '" height="100" width="100"></canvas><p>' + Math.round(day.temperatureMax) + '&deg; &ndash; ' + Math.round(day.temperatureMin) + '&deg;</p></div>'
-						days.push(['day' + index, day.icon])
+					if logging
+						console.log(day)
+					today = new Date(day.time * 1000)
+					document.getElementById('forecast').innerHTML += '<div title="' + day.summary + '"><small>' + today.toString().split(' ').slice(0, 3).join(' ') + '</small><canvas id="day' + index + '" height="100" width="100"></canvas><p>' + Math.round(day.temperatureMax) + '&deg; &ndash; ' + Math.round(day.temperatureMin) + '&deg;</p></div>'
+					dayIcons.push(['day' + index, day.icon])
 
 				# Loop over icon array, drawing icons
-				for icon in days
+				for icon in dayIcons
 					renderIcons(icon[0], icon[1])
 
-				fadeIn()
+				fade()
 	xhr.send(null)
 
 
@@ -106,7 +122,7 @@ renderSpinner = () ->
 
 
 # Fade elements in
-fadeIn = () ->
+fade = () ->
 	for fadedOut in document.getElementsByClassName('fadeout')
 		fadedOut.style.opacity = 0
 		fadedOut.style.display = 'none'
