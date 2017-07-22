@@ -31,7 +31,7 @@ gulp.task('pug', function() {
 			base: '/',
 			// base: '/weatha/',
 			name: 'Weatha',
-			version: '1.1.1',
+			version: '1.1.2',
 			intro: 'simple weather app',
 			githubURL: 'https://github.com/pschfr/weatha'
 		}

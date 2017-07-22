@@ -62,7 +62,7 @@ getWeather = (location) ->
 						console.log(weather.alerts)
 					document.getElementById('alerts').innerHTML = ''
 					for alert, index in weather.alerts
-						document.getElementById('alerts').innerHTML += '<a href="' + alert.uri + '" target="_blank" title="' + alert.description + '">' + alert.title + '</a>'
+						document.getElementById('alerts').innerHTML += '<a href="' + alert.uri + '" target="_blank" rel="noreferrer noopener" title="' + alert.description + '">' + alert.title + '</a>'
 						if index > 0
 							document.getElementById('alerts').innerHTML += '<br/>'
 
@@ -73,7 +73,13 @@ getWeather = (location) ->
 					if logging
 						console.log(day)
 					today = new Date(day.time * 1000)
-					document.getElementById('forecast').innerHTML += '<div title="' + day.summary + '"><small>' + today.toString().split(' ').slice(0, 3).join(' ') + '</small><canvas id="day' + index + '" height="100" width="100"></canvas><p>' + Math.round(day.temperatureMax) + '&deg; &ndash; ' + Math.round(day.temperatureMin) + '&deg;</p></div>'
+					if day.precipProbability != 0
+						precipText = Math.round((day.precipProbability * 100)) + '% ' + day.precipType
+					else
+						precipText = '0%'
+
+					document.getElementById('forecast').innerHTML += '<div title="' + day.summary + '"><small>' + today.toString().split(' ').slice(0, 3).join(' ') + '</small><canvas id="day' + index + '" height="100" width="100"></canvas><p>' + Math.round(day.temperatureMax) + '&deg; &ndash; ' + Math.round(day.temperatureMin) + '&deg;</p><small>' + precipText + '</small></div>'
+
 					dayIcons.push(['day' + index, day.icon])
 
 				# Loop over icon array, drawing icons

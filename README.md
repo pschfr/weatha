@@ -1,4 +1,4 @@
-# [Weatha, v1.1.1](https://paulmakesthe.net/weatha/)
+# [Weatha, v1.1.2](https://paulmakesthe.net/weatha/)
 Simple weather app built with NPM, Gulp, CoffeeScript, Pug, and Sass. The weather information comes from [Dark Sky](https://darksky.net/poweredby/), weather icons are [Skycons](https://darkskyapp.github.io/skycons/), also from Dark Sky.
 
 ![](screenshot.png)
